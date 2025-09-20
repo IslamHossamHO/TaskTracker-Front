@@ -1,0 +1,66 @@
+.TitleSection {
+  margin-top: 3%;
+  padding: 0px 30px 70px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.DashboardTitle {
+  font-size: 30px;
+}
+
+.CreateNewTaskButton {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.CreateNewTaskButton:hover {
+  background: #b71c1c;
+}
+
+.CardSection {
+  display: flex;
+  gap: 30px;
+  padding: 0px 30px 70px 30px;
+  justify-content: center;
+}
+
+.FilterSection {
+  display: flex;
+  width: 97%;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  justify-self: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.SearchBar {
+  width: 500px;
+  height: 65px;
+  background-color: rgb(243, 243, 243 );
+  border: 0px;
+  padding-left: 20px;
+  font-size: 19px;
+  font-weight: 500;
+  border-radius: 7px;
+}
+
+.DropDownSelect {
+  width: 200px;
+  height: 65px;
+  background-color: rgb(243, 243, 243);
+  border: 0px;
+  font-size: 19px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding-left: 20px;
+}

@@ -1,0 +1,29 @@
+/* Dropdown styling */
+.popup-select {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--input-bg, #f9f9f9);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-color, #333);
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  appearance: none; /* remove default browser arrow */
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23333' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px;
+}
+
+.popup-select:hover {
+  border-color: var(--primary, #4a90e2);
+  background-color: #fff;
+}
+
+.popup-select:focus {
+  border-color: var(--primary, #4a90e2);
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}

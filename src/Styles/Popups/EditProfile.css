@@ -1,0 +1,127 @@
+/* Overlay */
+.EditProfileOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+}
+
+/* Container */
+.EditProfileContainer {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Header */
+.EditProfileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.EditProfileTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #d62828;
+}
+
+.EditProfileClose {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+.EditProfileClose:hover {
+  color: #d62828;
+}
+
+/* Form */
+.EditProfileForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.EditProfileLabel {
+  font-size: 13px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+}
+
+.EditProfileInputWrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.EditProfileIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.EditProfileInput,
+.EditProfileSelect {
+  width: 100%;
+  padding: 10px 12px 10px 38px; /* room for icon */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.EditProfileInput:focus,
+.EditProfileSelect:focus {
+  border-color: #d62828;
+  box-shadow: 0 0 6px rgba(214, 40, 40, 0.25);
+}
+
+/* Actions */
+.EditProfileActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 12px;
+}
+
+.EditProfileButton {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.EditProfileCancel {
+  background: #f0f0f0;
+  color: #444;
+}
+
+.EditProfileCancel:hover {
+  background: #e0e0e0;
+}
+
+.EditProfileConfirm {
+  background: #d62828;
+  color: #fff;
+  box-shadow: 0 0 8px rgba(214, 40, 40, 0.4);
+}
+
+.EditProfileConfirm:hover {
+  background: #b91c1c;
+}

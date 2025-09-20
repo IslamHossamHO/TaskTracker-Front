@@ -1,0 +1,86 @@
+.NavbarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 40px 33px 40px;
+  background: white;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.NavbarTitle {
+  color: #EF3131;
+  font-size: 30px;
+  margin-top: -5px;
+}
+.NavbarUnderline {
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: red;
+  border-radius: 2px;
+}
+
+.NavigationsContainer {
+  display: flex;
+  gap: 60px;
+}
+
+.SelectedLink,
+.NormalLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.LinkImage {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+}
+
+.LinkLabel {
+  color: gray;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Selected link styles */
+.SelectedLink {
+  border-bottom: 3px solid red;
+  padding-bottom: 13px;
+  margin-top: 16.35px;
+}
+
+.SelectedLink .LinkLabel {
+  color: #EF3131;
+}
+
+.SelectedLink .LinkImage {
+  filter: brightness(0) saturate(100%) invert(18%) sepia(89%)
+          saturate(7500%) hue-rotate(-10deg) brightness(95%) contrast(105%);
+}
+
+/* Navbar icon container */
+.NavbarIconFrame {
+  background-color: rgba(255, 0, 0, 0.125);
+  width: 75px;
+  height: 70px;
+  border-radius: 10px;
+  margin-top: -10px;
+}
+
+.NavbarIcon {
+  padding: 5px;
+  filter: brightness(0) saturate(100%) invert(18%) sepia(89%)
+          saturate(7500%) hue-rotate(-10deg) brightness(95%) contrast(105%);
+}

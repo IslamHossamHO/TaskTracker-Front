@@ -1,0 +1,222 @@
+/* === Overlay === */
+.PopupOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+/* === Modal === */
+.PopupContainer {
+  background: #fff;
+  border-radius: 16px;
+  width: 680px;
+  max-height: 92vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.25);
+  transform-origin: center;
+  animation: popupEnter 0.35s ease;
+}
+
+/* === Header === */
+.PopupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 32px;
+  background: linear-gradient(135deg, #fff, #fef2f2);
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 16px 16px 0 0;
+}
+
+.PopupTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.3px;
+}
+
+.PopupClose {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  transition: transform 0.25s, color 0.25s;
+}
+.PopupClose:hover {
+  transform: rotate(90deg) scale(1.15);
+  color: #e53935;
+}
+
+/* === Form === */
+.PopupForm {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.PopupLabel {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.InputWrapper {
+  position: relative;
+}
+
+.InputIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 17px;
+  color: #e53935;
+}
+
+.PopupInput,
+.PopupSelect {
+  width: 100%;
+  padding: 13px 14px 13px 42px;
+  border: 1.5px solid #e6e6e6;
+  border-radius: 12px;
+  font-size: 15px;
+  background: #fafafa;
+  transition: all 0.25s ease;
+}
+.PopupInput:focus,
+.PopupSelect:focus {
+  border-color: #e53935;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+}
+
+.PopupTextarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #e6e6e6;
+  border-radius: 12px;
+  font-size: 15px;
+  background: #fafafa;
+  min-height: 120px;
+  resize: vertical;
+  transition: all 0.25s ease;
+  line-height: 1.5;
+}
+.PopupTextarea:focus {
+  border-color: #e53935;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.15);
+}
+
+/* Date row */
+.DateRow {
+  display: flex;
+  gap: 126px;
+  justify-content: space-between;
+}
+
+/* === Actions === */
+.PopupActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 20px 32px;
+  border-top: 1px solid #f3f3f3;
+  background: #fff;
+}
+
+.PopupButton {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+/* Cancel button */
+.PopupButtonCancel {
+  background: #f6f6f6;
+  color: #555;
+}
+.PopupButtonCancel:hover {
+  background: #e9e9e9;
+}
+
+/* Confirm button */
+.PopupButtonConfirm {
+  background: linear-gradient(135deg, #ff4d5f, #e53935);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35);
+}
+.PopupButtonConfirm:hover {
+  background: linear-gradient(135deg, #e53935, #d32f2f);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.45);
+}
+
+/* Scrollbar */
+.PopupContainer::-webkit-scrollbar {
+  width: 8px;
+}
+.PopupContainer::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 6px;
+}
+.PopupContainer::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* === Animations === */
+@keyframes popupEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Make date inputs wider */
+.WideInput {
+  width: 100%;
+}
+
+/* Put date fields side by side but flexible */
+.DateRow {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.DateField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+

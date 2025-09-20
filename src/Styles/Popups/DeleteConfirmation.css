@@ -1,0 +1,36 @@
+.DeletePopup {
+  max-width: 450px;
+  width: 100%;
+}
+
+.DeleteTitle {
+  color: #ef3131;
+  font-weight: 600;
+}
+
+.CenterContent {
+  text-align: center;
+}
+
+.DeleteMessage {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.CenterActions {
+  justify-content: center;
+}
+
+.PopupButtonDanger {
+  background-color: #ef3131;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(239, 49, 49, 0.6);
+  transition: all 0.2s ease-in-out;
+}
+
+.PopupButtonDanger:hover {
+  background-color: #d91f1f;
+  box-shadow: 0 0 14px rgba(239, 49, 49, 0.8);
+}

@@ -1,0 +1,214 @@
+/* === Overlay === */
+.PopupOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 20, 20, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* === Modal === */
+.ViewTaskContainer {
+  background: #fff;
+  border-radius: 18px;
+  width: 800px;
+  max-height: 94vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+  animation: popupEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+  position: relative;
+}
+
+/* === Header === */
+.PopupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px 34px;
+  background: linear-gradient(135deg, #fff, #fef3f3);
+  border-bottom: 1px solid #eee;
+  border-radius: 18px 18px 0 0;
+  animation: slideDown 0.6s ease;
+}
+
+.PopupTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.5px;
+}
+
+.PopupClose {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #999;
+  transition: transform 0.35s ease, color 0.3s ease;
+}
+.PopupClose:hover {
+  transform: rotate(180deg) scale(1.25);
+  color: #e53935;
+}
+
+/* === Body === */
+.PopupForm {
+  padding: 30px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  animation: fadeUp 0.8s ease;
+}
+
+.TaskField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.TaskFieldGrid {
+  display: flex;
+  gap: 32px;
+}
+
+.FieldLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.FieldValue {
+  font-size: 16px;
+  padding: 14px 16px;
+  border: 1.5px solid #e6e6e6;
+  border-radius: 12px;
+  background: #fafafa;
+  transition: all 0.25s ease;
+}
+.FieldValue:hover {
+  background: #fff;
+  border-color: #e53935;
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.12);
+}
+
+/* Status Dropdown */
+.PopupSelect {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #e6e6e6;
+  background: #fafafa;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+.PopupSelect:focus {
+  border-color: #e53935;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(229, 57, 53, 0.12);
+}
+.AnimatedSelect {
+  animation: pulse 1.8s infinite;
+}
+
+/* === Actions === */
+.PopupActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 18px;
+  padding: 24px 34px;
+  border-top: 1px solid #f3f3f3;
+  background: #fff;
+  animation: slideUp 0.7s ease;
+}
+
+.PopupButton {
+  padding: 14px 30px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+/* Cancel */
+.PopupButtonCancel {
+  background: #f6f6f6;
+  color: #555;
+}
+.PopupButtonCancel:hover {
+  background: #e9e9e9;
+  transform: translateY(-2px);
+}
+
+/* Confirm */
+.PopupButtonConfirm {
+  background: linear-gradient(135deg, #ff4d5f, #e53935);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35);
+}
+.PopupButtonConfirm:hover {
+  background: linear-gradient(135deg, #e53935, #d32f2f);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 26px rgba(229, 57, 53, 0.5);
+}
+
+/* === Animations === */
+@keyframes popupEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(50px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03) translateY(-6px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); }
+  70% { box-shadow: 0 0 0 12px rgba(229, 57, 53, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
+}
+
+.ViewTaskContainer::-webkit-scrollbar {
+  width: 10px;
+}
+.ViewTaskContainer::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 8px;
+}
+.ViewTaskContainer::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
