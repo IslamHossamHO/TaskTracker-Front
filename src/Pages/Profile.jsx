@@ -1,48 +1,50 @@
 import { useEffect, useState } from "react";
 import { FaEnvelope, FaPhone, FaCalendarAlt, FaUserEdit } from "react-icons/fa";
 import "../Styles/Pages/Profile.css";
-import { GetTasksAssignedToUserId, UpdateTaskStatus, UpdateUser , GetUserById } from "../Api";
+import {
+  GetTasksAssignedToUserId,
+  UpdateTaskStatus,
+  UpdateUser,
+} from "../Api";
 import TaskTable from "../Components/TaskTable";
 import ViewTask from "../Popups/ViewTask";
 import EditProfile from "../Popups/EditProfile";
+import roles from "../Constants/roleMap";
 
 export default function Profile() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [editUser, setEditUser] = useState(false);
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem("User");
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
+      try {
+        const parsedUser =
+          typeof storedUser === "string" && storedUser.startsWith("{")
+            ? JSON.parse(storedUser)
+            : JSON.parse(JSON.parse(storedUser));
 
-      (async () => {
-        const data = await GetAllTasksByUserID(parsedUser.id);
+        setUser(parsedUser);
 
-        const mapped = (data || []).map((t) => ({
-          id: t.id,
-          title: t.taskName,
-          description: t.taskDescription,
-          status: t.statusName,
-          dueDate: t.taskDeadline,
-          displayDueDate: new Date(t.taskDeadline).toLocaleDateString(),
-          assignedBy: t.assignedByName,
-          assignedTo: t.assignedToName,
-          createdAt: t.createdAt,
-        }));
-
-        setTasks(mapped);
-      })();
+        (async () => {
+          const data = await GetTasksAssignedToUserId(parsedUser.id);
+          setTasks(data || []);
+        })();
+      } catch (err) {
+        console.error("Failed to parse stored user:", err);
+      }
     }
   }, []);
 
   const handleStartTask = async (task) => {
     const updatedTask = { ...task, status: "In Progress" };
     try {
-      await patchtask(task.id);
-      setTasks((prev) => prev.map((t) => (t.id === task.id ? updatedTask : t)));
+      await UpdateTaskStatus(task.id);
+      setTasks((prev) =>
+        prev.map((t) => (t.id === task.id ? updatedTask : t))
+      );
     } catch (err) {
       console.error("Failed to update task:", err);
     }
@@ -51,8 +53,10 @@ export default function Profile() {
   const handleCompleteTask = async (task) => {
     const updatedTask = { ...task, status: "Completed" };
     try {
-      await patchtask(task.id);
-      setTasks((prev) => prev.map((t) => (t.id === task.id ? updatedTask : t)));
+      await UpdateTaskStatus(task.id);
+      setTasks((prev) =>
+        prev.map((t) => (t.id === task.id ? updatedTask : t))
+      );
     } catch (err) {
       console.error("Failed to update task:", err);
     }
@@ -60,15 +64,14 @@ export default function Profile() {
 
   const handleSaveUser = async (updatedUser) => {
     try {
-      await UpdateUser(updatedUser.id, updatedUser);
-      sessionStorage.setItem("User" , JSON.stringify(updatedUser))
+      await UpdateUser(updatedUser);
+      sessionStorage.setItem("User", JSON.stringify(updatedUser));
+      setUser(updatedUser);
       setEditUser(false);
-      window.location.reload();
     } catch (err) {
       console.error("Failed to update user:", err);
     }
   };
-
 
   return (
     <div className="profile-wrapper">
@@ -76,12 +79,12 @@ export default function Profile() {
 
       <div className="profile-card">
         <div className="profile-header">
-          <div className="avatar-circle">
-            {user?.fullNameEn?.charAt(0) || user?.name?.charAt(0)}
-          </div>
+          <div className="avatar-circle">{user?.name?.charAt(0)}</div>
           <div className="profile-text">
-            <h2 className="profile-name">{user?.fullNameEn || user?.name}</h2>
-            <span className="role-badge">{user?.role || "Engineer"}</span>
+            <h2 className="profile-name">{user?.name}</h2>
+            <span className="role-badge">
+              {roles[user?.roleHash] || "Unknown Role"}
+            </span>
           </div>
           <button
             className="edit-profile-btn"
@@ -102,9 +105,7 @@ export default function Profile() {
           </div>
           <div className="profile-detail">
             <FaCalendarAlt className="icon" />
-            <span>
-              {user?.createdAt || user?.joinDate}
-            </span>
+            <span>{user?.joinDate}</span>
           </div>
         </div>
       </div>

@@ -3,11 +3,10 @@ import { motion } from "framer-motion";
 import "../Styles/Pages/Members.css";
 import { FaUserCircle, FaTrash } from "react-icons/fa";
 import { MdGroups, MdTaskAlt } from "react-icons/md";
-import { GetAllAccounts, UpdateUser, DeleteAccount } from "../Api";
 import ViewMemberPopup from "../Popups/ViewMember";
 import DeleteConfirmationPopup from "../Popups/DeleteConfirmation";
 
-export default function Members() {
+export default function Members() { 
   const [demoMembers, setDemoMembers] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [popupType, setPopupType] = useState(null);

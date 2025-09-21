@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import graduationCap from "../Assets/graduationcap.png";
 import eye from "../Assets/eye.png";
 import "../Styles/Pages/Login.css";
-import { LoginAPI , GetUserById } from "../Api";
+import { LoginUser} from "../Api";
 
 export default function Login() {
   const [seePass, setSeePass] = useState(false);
@@ -13,12 +13,11 @@ export default function Login() {
 
   const HandleLogin = async (e) => {
     e.preventDefault();
-    const result = await LoginAPI(Email, Password);
-    const s = result;
+    const result = await LoginUser({Email, Password});
+    const s = JSON.stringify(result);
 
     if (result) {
-      const m = await GetUserById(s.id);
-      sessionStorage.setItem("User" , JSON.stringify(m));
+      sessionStorage.setItem("User" , s);
       navigate("/profile");
     } else {
       alert("Login failed!");

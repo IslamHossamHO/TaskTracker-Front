@@ -5,12 +5,10 @@ import "../Styles/Popups/EditProfile.css";
 export default function EditProfile({ user, onClose, onSave }) {
   const [formData, setFormData] = useState({
     id: user?.id,
-    nationalId: user?.nationalId ?? "",
-    email: user?.email ?? "",
-    name: user?.fullNameEn ?? user?.name,
-    fullNameAr: user?.fullNameAr ?? "",
-    phone: user?.phone ?? "",
-    role: user?.role ?? "Engineer",
+    email: user?.email,
+    name: user?.name,
+    phone: user?.phone,
+    role: user?.roleHash ?? "Engineer",
     joinDate: user?.joinDate ?? null,
   });
 

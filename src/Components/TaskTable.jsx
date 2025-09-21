@@ -19,14 +19,15 @@ export default function TaskTable({
         return "status done";
       case "Not Started":
         return "status not-started";
+      case "Active":
+        return "status active";
       default:
-        return "";
+        return "status";
     }
   };
 
   const renderActions = (task) => {
     if (readOnly) {
-      // ✅ when readOnly + view-only → just "View"
       if (actionType === "view-only") {
         return (
           <td className="actions">
@@ -34,16 +35,15 @@ export default function TaskTable({
               className="table-btn view-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onViewTask && onViewTask(task);
+                onViewTask?.(task);
               }}
             >
-              View Details
+              View
             </button>
           </td>
         );
       }
 
-      // ✅ readOnly but not "view-only" → keep Start/Complete + View
       return (
         <td className="actions">
           {task.status === "Not Started" && (
@@ -51,10 +51,10 @@ export default function TaskTable({
               className="table-btn start-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onStartTask && onStartTask(task);
+                onStartTask?.(task);
               }}
             >
-              Start Task
+              Start
             </button>
           )}
           {task.status === "In Progress" && (
@@ -62,7 +62,7 @@ export default function TaskTable({
               className="table-btn complete-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onCompleteTask && onCompleteTask(task);
+                onCompleteTask?.(task);
               }}
             >
               Mark Complete
@@ -72,16 +72,15 @@ export default function TaskTable({
             className="table-btn view-btn"
             onClick={(e) => {
               e.stopPropagation();
-              onViewTask && onViewTask(task);
+              onViewTask?.(task);
             }}
           >
-            View Details
+            View
           </button>
         </td>
       );
     }
 
-    // ✅ Normal editable actions
     switch (actionType) {
       case "start-complete":
         return (
@@ -91,10 +90,10 @@ export default function TaskTable({
                 className="table-btn start-btn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onStartTask && onStartTask(task);
+                  onStartTask?.(task);
                 }}
               >
-                Start Task
+                Start
               </button>
             )}
             {task.status === "In Progress" && (
@@ -102,20 +101,20 @@ export default function TaskTable({
                 className="table-btn complete-btn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onCompleteTask && onCompleteTask(task);
+                  onCompleteTask?.(task);
                 }}
               >
-                Complete Task
+                Complete
               </button>
             )}
             <button
               className="table-btn view-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onViewTask && onViewTask(task);
+                onViewTask?.(task);
               }}
             >
-              View Details
+              View
             </button>
           </td>
         );
@@ -126,10 +125,10 @@ export default function TaskTable({
               className="table-btn view-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onViewTask && onViewTask(task);
+                onViewTask?.(task);
               }}
             >
-              View Details
+              View
             </button>
           </td>
         );
@@ -140,7 +139,7 @@ export default function TaskTable({
               className="table-btn edit-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onEdit && onEdit(task);
+                onEdit?.(task);
               }}
             >
               Edit
@@ -149,7 +148,7 @@ export default function TaskTable({
               className="table-btn delete-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onDelete && onDelete(task);
+                onDelete?.(task);
               }}
             >
               Delete
@@ -173,16 +172,16 @@ export default function TaskTable({
         </thead>
         <tbody>
           {tasks.length > 0 ? (
-            tasks.map((task, idx) => (
+            tasks.map((task) => (
               <tr
-                key={idx}
+                key={task.id}
                 className="task-row"
-                onClick={() => onViewTask && onViewTask(task)}
+                onClick={() => onViewTask?.(task)}
               >
                 <td className="task-title-cell">
-                  <div className="task-title">{task.title}</div>
-                  {task.description && (
-                    <div className="task-description">{task.description}</div>
+                  <div className="task-title">{task.taskName}</div>
+                  {task.taskDescription && (
+                    <div className="task-description">{task.taskDescription}</div>
                   )}
                 </td>
                 <td>
@@ -191,10 +190,11 @@ export default function TaskTable({
                   </span>
                 </td>
                 <td className="due-date-cell">
-                  <div className="due-date">{task.dueDate}</div>
-                  {task.weeks && <div className="weeks">{task.weeks}</div>}
+                  {task.dueDate
+                    ? new Date(task.dueDate).toLocaleString()
+                    : "—"}
                 </td>
-                <td>{task.assignedBy || "—"}</td>
+                <td>{task.assignedByName || "—"}</td>
                 {renderActions(task)}
               </tr>
             ))
