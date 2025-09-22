@@ -5,16 +5,13 @@ import { Navigate } from "react-router-dom";
 
 export default function ProtectedRoutes({ role, location }) {
   const allowedRoles1 = [
-    "SuperAdmin",
-    "Senior Engineer",
-    "Senior Teacher",
-    "StaffAdmin",
-    "Reviewer",
-    "Senior_Engineer",
-    "Senior_Teacher",
+    "e64d8a3d9a",
+    "a55c5c897d",
+    "8c6976e5b5",
+    "b5284c8720",
   ];
 
-  const allowedRoles2 = ["SuperAdmin"];
+  const allowedRoles2 = ["e64d8a3d9a"];
 
   if (location === "/dashboard") {
     return allowedRoles1.includes(role) ? (

@@ -1,4 +1,4 @@
-const ROLE_MAP = {
+const roleMap = {
   "e64d8a3d9a": "Super Admin",
   "8c6976e5b5": "Admin",
   "a55c5c897d": "Senior Engineer",
@@ -8,4 +8,4 @@ const ROLE_MAP = {
   "x2951g0725": "Reviewer",
 };
 
-export default ROLE_MAP;
+export default roleMap;

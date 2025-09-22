@@ -13,14 +13,19 @@ export default function Login() {
 
   const HandleLogin = async (e) => {
     e.preventDefault();
-    const result = await LoginUser({Email, Password});
-    const s = JSON.stringify(result);
-
-    if (result) {
-      sessionStorage.setItem("User" , s);
-      navigate("/profile");
-    } else {
-      alert("Login failed!");
+    try {
+      const result = await LoginUser({email: Email, password: Password});
+      
+      if (result && !result.error) {
+        const userData = JSON.stringify(result);
+        sessionStorage.setItem("User", userData);
+        navigate("/profile");
+      } else {
+        alert("Login failed! Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login. Please try again.");
     }
   };
 

@@ -158,17 +158,37 @@ export default function TaskTable({
     }
   };
 
+  // Determine which columns to show based on actionType
+  const getTableHeaders = () => {
+    if (actionType === "view-only") {
+      return (
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Due Date</th>
+          <th>Assigned To</th>
+          <th>Assigned By</th>
+          <th style={{ textAlign: "center" }}>Actions</th>
+        </tr>
+      );
+    } else {
+      return (
+        <tr>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Due Date</th>
+          <th>Assigned To</th>
+          <th style={{ textAlign: "center" }}>Actions</th>
+        </tr>
+      );
+    }
+  };
+
   return (
     <div className="table-container">
       <table className="task-table">
         <thead>
-          <tr>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Due Date</th>
-            <th>Assigned By</th>
-            <th style={{ textAlign: "center" }}>Actions</th>
-          </tr>
+          {getTableHeaders()}
         </thead>
         <tbody>
           {tasks.length > 0 ? (
@@ -194,7 +214,8 @@ export default function TaskTable({
                     ? new Date(task.dueDate).toLocaleString()
                     : "—"}
                 </td>
-                <td>{task.assignedByName || "—"}</td>
+                <td>{task.assignedToName || "—"}</td>
+                {actionType === "view-only" && <td>{task.assignedByName || "—"}</td>}
                 {renderActions(task)}
               </tr>
             ))

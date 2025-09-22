@@ -4,12 +4,24 @@ import "../Styles/Pages/Members.css";
 import { FaUserCircle, FaTrash } from "react-icons/fa";
 import { MdGroups, MdTaskAlt } from "react-icons/md";
 import ViewMemberPopup from "../Popups/ViewMember";
-import DeleteConfirmationPopup from "../Popups/DeleteConfirmation";
+import DeleteMemberC from "../Popups/DeleteMember";
+import { GetAllUsers, DeleteUser, ChangeUserRole } from "../Api";
 
-export default function Members() { 
-  const [demoMembers, setDemoMembers] = useState([]);
+export default function Members() {
+  const [members, setMembers] = useState([]);
   const [selectedMember, setSelectedMember] = useState(null);
   const [popupType, setPopupType] = useState(null);
+
+  // Map of encrypted IDs → human-readable names
+  const roleMap = {
+    "e64d8a3d9a": "Super Admin",
+    "8c6976e5b5": "Admin",
+    "a55c5c897d": "Senior Engineer",
+    "f9a27d94f2": "Engineer",
+    "b5284c8720": "Senior Teacher",
+    "b5284c2794": "Teacher",
+    "x2951g0725": "Reviewer",
+  };
 
   useEffect(() => {
     fetchMembers();
@@ -17,35 +29,42 @@ export default function Members() {
 
   async function fetchMembers() {
     try {
-      const res = await GetAllAccounts();
-      setDemoMembers(res.data);
+      const res = await GetAllUsers();
+      setMembers(res || []);
     } catch (err) {
       console.error("Error fetching members:", err);
     }
   }
 
+  // Update role of a member
   async function handleUpdate(updated) {
     try {
-      await UpdateUser(updated.id, updated);
-      setDemoMembers((prev) =>
-        prev.map((m) => (m.id === updated.id ? { ...m, ...updated } : m))
-      );
+      await ChangeUserRole(updated.id, updated.roleHash); // send encrypted ID
+      await fetchMembers(); // refresh table
       setPopupType(null);
     } catch (err) {
       console.error("Error updating user:", err);
+      alert("Failed to update user. Please try again.");
     }
   }
 
-  // ✅ handle delete
+  // Delete a member
   async function handleDelete(member) {
     try {
-      await DeleteAccount(member.id);
-      setDemoMembers((prev) => prev.filter((m) => m.id !== member.id));
+      await DeleteUser(member.id);
+      await fetchMembers();
       setPopupType(null);
     } catch (err) {
       console.error("Error deleting user:", err);
+      alert("Failed to delete user. Please try again.");
     }
   }
+
+  // Helper: get human-readable role
+  const getRoleName = (member) => {
+    if (!member.roleHash) return "N/A";
+    return roleMap[member.roleHash] ?? "N/A";
+  };
 
   return (
     <motion.div className="members-dashboard" initial="hidden" animate="visible">
@@ -57,8 +76,10 @@ export default function Members() {
           <MdGroups className="card-icon blue" />
           <div>
             <div className="card-title">Total Members</div>
-            <div className="card-sub">{demoMembers.length}</div>
-            <div className="card-desc">2 unique roles</div>
+            <div className="card-sub">{members.length}</div>
+            <div className="card-desc">
+              {new Set(members.map((m) => getRoleName(m))).size} unique roles
+            </div>
           </div>
         </div>
         <div className="card">
@@ -71,20 +92,19 @@ export default function Members() {
         </div>
       </motion.div>
 
-      {/* Table */}
+      {/* Members Table */}
       <motion.div className="members-table">
         <table>
           <thead>
             <tr>
               <th>Member</th>
               <th>Role</th>
-              <th>Tasks</th>
               <th>Join Date</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {demoMembers.map((m) => (
+            {members.map((m) => (
               <tr key={m.id}>
                 <td>
                   <div className="member-cell">
@@ -96,9 +116,8 @@ export default function Members() {
                   </div>
                 </td>
                 <td>
-                  <span className="role-badge">{m.role}</span>
+                  <span className="role-badge">{getRoleName(m)}</span>
                 </td>
-                <td>{m.tasks}</td>
                 <td>{new Date(m.joinDate).toLocaleDateString()}</td>
                 <td className="actions-cell">
                   <button
@@ -126,20 +145,20 @@ export default function Members() {
         </table>
       </motion.div>
 
-      {/* ✅ Popups */}
+      {/* Popups */}
       {popupType === "view" && selectedMember && (
         <ViewMemberPopup
           member={selectedMember}
           onClose={() => setPopupType(null)}
-          onSave={handleUpdate} // now hooked up
+          onSave={handleUpdate}
         />
       )}
 
       {popupType === "delete" && selectedMember && (
-        <DeleteConfirmationPopup
+        <DeleteMemberC
           member={selectedMember}
           onClose={() => setPopupType(null)}
-          onDelete={handleDelete} // now hooked up
+          onConfirm={handleDelete}
         />
       )}
     </motion.div>

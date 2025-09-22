@@ -8,9 +8,10 @@ export default function EditProfile({ user, onClose, onSave }) {
     email: user?.email,
     name: user?.name,
     phone: user?.phone,
-    role: user?.roleHash ?? "Engineer",
-    joinDate: user?.joinDate ?? null,
+    roleHash: user?.roleHash,
+    joinDate: new Date(user?.joinDate).toISOString(),
   });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;

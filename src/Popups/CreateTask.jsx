@@ -1,9 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegEdit, FaClock, FaSave, FaTimes } from "react-icons/fa";
 import PopupWrapper from "../Components/PopupWrapper";
 import "../Styles/Popups/CreateTask.css";
+import { GetAllUsers, CreateTaskAPI } from "../Api";
 
 export default function CreateTaskPopup({ onClose, onCreate }) {
+  const [users, setUsers] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    assignedToId: "",
+    dueDate: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  // 👉 Fetch all users on mount
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await GetAllUsers();
+        setUsers(data || []);
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  // 👉 Form change handler
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 👉 Handle submit (match TaskCreateDto)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const user = JSON.parse(sessionStorage.getItem("User"));
+
+      const assignedToUser = users.find(
+        (u) => u.id == formData.assignedToId
+      );
+
+      const payload = {
+        taskName: formData.title,
+        taskDescription: formData.description,
+        assignedToName: assignedToUser?.fullName || assignedToUser?.name,
+        assignedByName: user?.fullName || user?.name || "Unknown",
+        status: "Not Started",
+        dueDate: formData.dueDate,
+      };
+
+      const createdTask = await CreateTaskAPI(payload);
+      if (createdTask) {
+        onCreate && onCreate(createdTask);
+        onClose();
+      }
+    } catch (err) {
+      console.error("Failed to create task:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <PopupWrapper>
       <div className="popup-overlay">
@@ -18,50 +79,58 @@ export default function CreateTaskPopup({ onClose, onCreate }) {
           </div>
 
           <div className="popup-body">
-            <form
-              className="popup-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                onCreate && onCreate(); // ✅ send data up
-                onClose();
-              }}
-            >
+            <form className="popup-form" onSubmit={handleSubmit}>
               <div className="form-field">
                 <label className="form-label">Task Title</label>
-                <input type="text" name="title" className="form-input" />
+                <input
+                  type="text"
+                  name="title"
+                  className="form-input"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div className="form-field">
                 <label className="form-label">Description</label>
-                <textarea name="description" className="form-textarea" />
+                <textarea
+                  name="description"
+                  className="form-textarea"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div className="form-field">
                 <label className="form-label">Assigned To</label>
-                <select name="assignedToId" className="form-select">
+                <select
+                  name="assignedToId"
+                  className="form-select"
+                  value={formData.assignedToId}
+                  onChange={handleChange}
+                  required
+                >
                   <option value="">Select User</option>
-                  <option value="1">User One</option>
-                  <option value="2">User Two</option>
+                  {users.map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.fullName || u.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div className="field-grid">
-                <div className="form-field">
-                  <label className="form-label">Begin Date</label>
-                  <input type="date" name="beginDate" className="form-input" />
-                </div>
-                <div className="form-field">
-                  <label className="form-label">Due Date</label>
-                  <input type="date" name="dueDate" className="form-input" />
-                </div>
-              </div>
-
               <div className="form-field">
-                <label className="form-label">Duration</label>
-                <div className="duration-display">
-                  <FaClock style={{ marginRight: "8px" }} />
-                  3 day(s)
-                </div>
+                <label className="form-label">Due Date</label>
+                <input
+                  type="date"
+                  name="dueDate"
+                  className="form-input"
+                  value={formData.dueDate}
+                  onChange={handleChange}
+                  required
+                />
               </div>
 
               <div className="popup-actions">
@@ -69,11 +138,16 @@ export default function CreateTaskPopup({ onClose, onCreate }) {
                   type="button"
                   className="popup-btn popup-btn-secondary"
                   onClick={onClose}
+                  disabled={loading}
                 >
                   <FaTimes /> Cancel
                 </button>
-                <button type="submit" className="popup-btn popup-btn-primary">
-                  <FaSave /> Create Task
+                <button
+                  type="submit"
+                  className="popup-btn popup-btn-primary"
+                  disabled={loading}
+                >
+                  <FaSave /> {loading ? "Creating..." : "Create Task"}
                 </button>
               </div>
             </form>

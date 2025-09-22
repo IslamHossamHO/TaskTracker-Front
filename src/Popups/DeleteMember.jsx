@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import { FaTrash, FaTimes } from "react-icons/fa";
 import PopupWrapper from "../Components/PopupWrapper";
 import "../Styles/Popups/CreateTask.css";
-import { DeleteTaskAPI } from "../Api";
+import { DeleteUser } from "../Api";
 
-export default function DeleteConfirmationPopup({ task, onClose, onDelete }) {
+export default function DeleteMemberC({ member, onClose, onDelete }) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      await DeleteTaskAPI(task.id);
-      onDelete?.(task.id); // notify parent that deletion succeeded
+      await DeleteUser(member.id);
+      onDelete?.(member.id); // notify parent that deletion succeeded
     } catch (error) {
-      console.error("Failed to delete task:", error);
+      console.error("Failed to delete member:", error);
       // You can show an error toast/message here
     } finally {
       setLoading(false);

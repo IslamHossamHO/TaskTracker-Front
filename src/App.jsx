@@ -18,10 +18,10 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-        <Route path="/dashboard" element={user ? <MainLayout><PageWrapper><ProtectedRoutes role = {user.role} location = {"/dashboard"}/></PageWrapper></MainLayout> : <Navigate to="/login" replace />} />
+        <Route path="/dashboard" element={user ? <MainLayout><PageWrapper><ProtectedRoutes role = {user.roleHash} location = {"/dashboard"}/></PageWrapper></MainLayout> : <Navigate to="/login" replace />} />
         <Route path="/profile" element={user ? <MainLayout><PageWrapper><Profile /></PageWrapper></MainLayout> : <Navigate to="/login" replace />} />
         <Route path="/notifications" element={user ? <MainLayout><PageWrapper><Notifications /></PageWrapper></MainLayout> : <Navigate to="/login" replace />} />
-        <Route path="/members" element={user ? <MainLayout><PageWrapper><ProtectedRoutes role = {user.role} location = {"/members"}/></PageWrapper></MainLayout> : <Navigate to="/login" replace />} />
+        <Route path="/members" element={user ? <MainLayout><PageWrapper><ProtectedRoutes role = {user.roleHash} location = {"/members"}/></PageWrapper></MainLayout> : <Navigate to="/login" replace />} />
         <Route path="*" element={<Navigate to={user ? "/profile" : "/login"} replace />} />
       </Routes>
     </AnimatePresence>

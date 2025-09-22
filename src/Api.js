@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://localhost:7296/api/",
+  baseURL: "http://task-tracker-v4.runasp.net/api/",
 });
 
 // User
@@ -36,15 +36,23 @@ export async function ChangeUserRole(id,rolehash){
     }
 }
 
-export async function UpdateUser(user){
-    try{
-        await API.put(`Account/update`,user);
-        return("Ok")
-    }
-    catch(ex){
-        return console.error(ex)
-    }
+export async function UpdateUser(user) {
+  try {
+    const payload = {
+      ...user,
+      joinDate: new Date(user.joinDate).toISOString().split("T")[0],
+    };
+
+    console.log("Sending payload:", payload);
+
+    await API.put("Account/update", payload);
+    return "Ok";
+  } catch (ex) {
+    console.error("UpdateUser error:", ex);
+    throw ex;
+  }
 }
+
 
 export async function DeleteUser(id){
     try{
@@ -85,10 +93,20 @@ export async function GetNotificationByUserID(id){
 export async function UpdateNotification(id){
     try{
         await API.patch(`Notification/notification/${id}`);
-        return("Ok")
+        return console.log("Ok")
     }
     catch(ex){
         return console.error(ex)
+    }
+}
+
+export async function DeleteNotification(id){
+    try{
+        await API.delete(`Notification/notification/${id}`);
+        return console.log("Ok");
+    }
+    catch(ex){
+        return console.error(ex);
     }
 }
 
@@ -134,7 +152,7 @@ export async function GetTasksAssignedToUserId(id){
     }
 }
 
-export async function CreateTask(dto){
+export async function CreateTaskAPI(dto){
     try{
         await API.post(`Task/create`,dto)
         return("Ok")
@@ -144,7 +162,7 @@ export async function CreateTask(dto){
     }
 }
 
-export async function UpdateTask(id,dto){
+export async function UpdateTaskAPI(id,dto){
     try{
         await API.put(`Task/update/${id}`,dto)
         return("Ok")
@@ -154,7 +172,7 @@ export async function UpdateTask(id,dto){
     }
 }
 
-export async function DeleteTask(id){
+export async function DeleteTaskAPI(id){
     try{
         await API.delete(`Task/delete/${id}`)
         return("Ok")

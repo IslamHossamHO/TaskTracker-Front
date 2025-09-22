@@ -21,10 +21,7 @@ export default function Profile() {
     const storedUser = sessionStorage.getItem("User");
     if (storedUser) {
       try {
-        const parsedUser =
-          typeof storedUser === "string" && storedUser.startsWith("{")
-            ? JSON.parse(storedUser)
-            : JSON.parse(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
 
         setUser(parsedUser);
 
